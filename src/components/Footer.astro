@@ -1,6 +1,6 @@
-<footer id="footer" class="mt-64 relative">
-    <section  id="footer-menu" class="grid grid-cols-10 px-10 py-10">
-        <article  class="col-start-1 col-span-4 flex flex-col gap-4 tracking-[-5%]">
+<footer id="footer" class="pt-64 overflow-hidden relative">
+    <section id="footer-menu" class="bg-black relative z-20 grid grid-cols-10 px-10 py-10">
+        <article class="col-start-1 col-span-4 flex flex-col gap-4 tracking-[-5%]">
             <h3 class="text-[40px] leading-10">Let’s team up and make something legendary.</h3>
             <div class="flex flex-col">
                 <a href="mailto:coanegrafilms@gmail.com" target="_blank" class="group flex items-center gap-2 text-[18px] text-[#C2C2C2] transition-all duration-300 hover:gap-4">
@@ -52,8 +52,8 @@
             </a>
         </article>
     </section>
-    <section id="footer-bottom" class="w-full overflow-hidden">
-        <img src="/logos/logo-footer.svg">
+    <section id="footer-bottom" class="z-0 absolute bottom-0 w-full ">
+        <img src="/logos/logo-footer.svg" class="w-full h-auto">
     </section>
 </footer>
 
@@ -71,12 +71,19 @@
   }
 });
 
-tlFooter.from("#footer-menu", {
-  y: 160,
-  delay: 0.3,
-  opacity: 0,
-  duration: 1.5,
-  ease: "power3.out",
-})
-   
+   gsap.fromTo("#footer-menu",
+  {
+    y: 0
+  },
+  {
+    y: -220, // ajusta según cuánto quieras destapar
+    ease: "none",
+    scrollTrigger: {
+      trigger: "#footer",
+      start: "top bottom",
+      end: "bottom bottom",
+      scrub: true,
+    }
+  }
+);
 </script>
