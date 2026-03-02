@@ -1,6 +1,6 @@
-<footer class="mt-64 relative">
-    <section class="grid grid-cols-10 px-10 py-10">
-        <article class="col-start-1 col-span-4 flex flex-col gap-4 tracking-[-5%]">
+<footer id="footer" class="mt-64 relative">
+    <section  id="footer-menu" class="grid grid-cols-10 px-10 py-10">
+        <article  class="col-start-1 col-span-4 flex flex-col gap-4 tracking-[-5%]">
             <h3 class="text-[40px] leading-10">Let’s team up and make something legendary.</h3>
             <div class="flex flex-col">
                 <a href="mailto:coanegrafilms@gmail.com" target="_blank" class="group flex items-center gap-2 text-[18px] text-[#C2C2C2] transition-all duration-300 hover:gap-4">
@@ -52,8 +52,31 @@
             </a>
         </article>
     </section>
-    <section class="w-full overflow-hidden">
+    <section id="footer-bottom" class="w-full overflow-hidden">
         <img src="/logos/logo-footer.svg">
     </section>
 </footer>
 
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const tlFooter = gsap.timeline({
+    scrollTrigger: {
+    trigger: "#footer",
+    start: "top 80%",
+    toggleActions: "play none none reverse",
+  }
+});
+
+tlFooter.from("#footer-menu", {
+  y: 160,
+  delay: 0.3,
+  opacity: 0,
+  duration: 1.5,
+  ease: "power3.out",
+})
+   
+</script>
