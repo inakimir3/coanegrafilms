@@ -1,0 +1,21 @@
+---
+import Card from './Card.astro';
+---
+
+<section class="pb-60 px-10 py-5 grid grid-cols-10 gap-x-5">
+    <article class="col-start-2 col-span-8 flex items-center justify-between">
+        <h2 class="text-[64px] tracking-[-5%]">Recent projects</h2>
+        <a href="#" class="tracking-[-5%] group flex items-center gap-2 text-[18px] text-[#C2C2C2] transition-all duration-300 hover:gap-4">
+            <img src="/icons/red-circle.svg" class="group-hover:rotate-180 transition-all duration-300">
+            <span>
+                See all projects
+            </span>
+        </a>
+    </article>
+
+    <article class="mt-24 col-start-2 col-span-8 grid grid-cols-3 gap-5">
+        <Card title="Vi de la Terra" href="#" imageSrc="/images/cover-videlaterra.png" videoSrc="/videos/video-videlaterra.mp4" />
+        <Card title="Vi de la Terra" href="#" imageSrc="/images/cover-videlaterra.png" videoSrc="/videos/video-videlaterra.mp4" />
+        <Card title="Vi de la Terra" href="#" imageSrc="/images/cover-videlaterra.png" videoSrc="/videos/video-videlaterra.mp4" />
+    </article>
+</section>
