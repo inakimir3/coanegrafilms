@@ -1,22 +1,68 @@
-<section class="mt-20 px-10 py-5 grid grid-cols-10 gap-x-5">
-    <h1 class="text-[32px] col-span-5 col-start-2 tracking-[-5%]">Your creative partners for Visual Arts.</h1>
-    <a href="#" class="tracking-[-5%] group col-start-2 col-span-2 flex items-center gap-2 text-[18px] text-[#C2C2C2] transition-all duration-300 hover:gap-4">
-        <img src="/icons/red-circle.svg" class="group-hover:rotate-180 transition-all duration-300">
-        <span>
-            Work with us
-        </span>
-    </a>
+<section id="heroIntro" class="mt-20 px-10 py-5 grid grid-cols-10 gap-x-5">
+  <h1 class="intro-title text-[32px] col-span-5 col-start-2 tracking-[-5%]">
+    Your creative partners for Visual Arts.
+  </h1>
+
+  <a href="#" class="intro-cta tracking-[-5%] group col-start-2 col-span-2 flex items-center gap-2 text-[18px] text-[#C2C2C2]">
+    <img src="/icons/red-circle.svg">
+    <span>Work with us</span>
+  </a>
 </section>
 
 <section class="mt-20 px-10 py-5 grid grid-cols-10 gap-x-5">
-<video 
-  autoplay 
-  muted 
-  loop 
-  playsinline 
-  preload="metadata"
-  class="col-span-8 col-start-2 w-full aspect-15/7 object-cover"
->
-  <source src="/videos/video-home.mp4" type="video/mp4" />
-</video>    
+  <video 
+    id="heroVideo"
+    autoplay 
+    muted 
+    loop 
+    playsinline 
+    preload="metadata"
+    class="col-span-8 col-start-2 w-full aspect-15/7 object-cover"
+  >
+    <source src="/videos/video-home.mp4" type="video/mp4" />
+  </video>    
 </section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+
+  const tlText = gsap.timeline({
+    scrollTrigger: {
+      trigger: "#heroIntro",
+      start: "top 80%",
+      toggleActions: "play none none reverse",
+    }
+  });
+
+  tlText.from(".intro-title", {
+    y: 60,
+    opacity: 0,
+    duration: 1.3,
+    ease: "power3.out"
+  })
+  .from(".intro-cta", {
+    y: 30,
+    opacity: 0,
+    duration: 0.5,
+    ease: "power2.out"
+  }, "-=0.6");
+
+
+  const video = document.querySelector("#heroVideo");
+
+  gsap.to(video, {
+    scrollTrigger: {
+      trigger: video,
+      start: "top 80%",
+      end: "top 20%",
+      scrub: true,
+    },
+    scale: 1.25,
+    transformOrigin: "center center",
+    ease: "none"
+  });
+</script>
