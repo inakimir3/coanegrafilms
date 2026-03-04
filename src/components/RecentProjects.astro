@@ -2,19 +2,19 @@
 import Card from './Card.astro';
 ---
 
-<section id="recentProjects" class="px-5 lg:px-10 py-5 grid grid-cols-10 gap-x-5">
+<section id="recentProjects" class="px-5 md:px-10 py-5 grid grid-cols-5 md:grid-cols-10 gap-x-5">
     
-    <article class="recent-header col-start-1 lg:col-start-2 col-span-10 lg:col-span-8 flex items-center justify-between">
-        <h2 id="recentTitle" class="text-[40px] lg:text-[64px] tracking-[-5%]">Recent projects</h2>
+    <article class="recent-header col-start-1 md:col-start-2 col-span-5 md:col-span-8 flex flex-col md:flex-row gap-2 md:gap-0 items-start md:items-center justify-between">
+        <h2 id="recentTitle" class="text-[24px] md:text-[64px] tracking-[-5%]">Recent projects</h2>
 
-        <a id="recentCTA" href="#" class="tracking-[-5%] group flex items-center gap-2 text-[16px] lg:text-[18px] text-[#C2C2C2] transition-all duration-300 hover:gap-4">
+        <a id="recentCTA" href="#" class="tracking-[-5%] group flex items-center gap-2 text-[14px] md:text-[18px] text-[#C2C2C2] transition-all duration-300 hover:gap-4">
             <img src="/icons/red-circle.svg" class="group-hover:rotate-180 transition-all duration-300">
             <span>See all projects</span>
         </a>
     </article>
 
     <!-- Mobile -->
-    <article id="recentSwiper" class="mt-16 lg:hidden col-span-10">
+    <article id="recentSwiper" class="mt-16 md:hidden col-span-5">
         <div class="swiper">
             <div class="swiper-wrapper">
                 <div class="swiper-slide"><Card title="Jordania" href="#" imageSrc="/images/cover-namibia.webp" videoSrc="/videos/video-namibia.mp4" /></div>
@@ -25,7 +25,7 @@ import Card from './Card.astro';
     </article>
 
     <!-- Desktop -->
-    <article id="recentGrid" class="hidden lg:grid mt-24 col-start-2 col-span-8 grid-cols-3 gap-5">
+    <article id="recentGrid" class="hidden md:grid mt-24 col-start-2 col-span-8 grid-cols-3 gap-5">
         <Card title="Jordania" href="#" imageSrc="/images/cover-namibia.webp" videoSrc="/videos/video-namibia.mp4" />
         <Card title="Namibia" href="#" imageSrc="/images/cover-namibia.webp" videoSrc="/videos/video-namibia.mp4" />
         <Card title="Vi de la Terra" href="#" imageSrc="/images/cover-videlaterra.png" videoSrc="/videos/video-videlaterra.mp4" />
