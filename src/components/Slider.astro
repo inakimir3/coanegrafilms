@@ -1,16 +1,20 @@
 <section class="c-slider">
-    <div class="c-slider__videos">
-        <video src="/videos/test1.mp4" autoplay muted loop playsinline class="w-full h-full object-cover"></video>
-    </div>
-    <div class="c-slider__title">
-        <h2>Zalando Social Media</h2>
-    </div>
-    <div class="c-slider__indicator">
-        <div class="c-slider__indices"></div>
-        <div class="c-slider__progress-bar">
-            <div class="c-slider__progress"></div>
+    <a class="c-slider__link" href="#">
+        <div class="c-slider__videos">
+            <video src="/videos/test1.mp4" autoplay muted loop playsinline class="w-full h-full object-cover"></video>
         </div>
-    </div>
+
+        <div class="c-slider__title">
+            <h2>Zalando Social Media</h2>
+        </div>
+
+        <div class="c-slider__indicator">
+            <div class="c-slider__indices"></div>
+            <div class="c-slider__progress-bar">
+                <div class="c-slider__progress"></div>
+            </div>
+        </div>
+    </a>
 </section>
 
 
@@ -35,23 +39,28 @@
         const slides = [
             {
                 title: "Zalando Social Media",
-                video: "/videos/test1.mp4"
+                video: "/videos/test1.mp4",
+                link: "#"
             },
             {
                 title: "Vi de la Terra",
-                video: "/videos/test2.mp4"
+                video: "/videos/test2.mp4",
+                link: "#"
             },
             {
                 title: "Namibia",
-                video: "/videos/video-home.mp4"
+                video: "/videos/video-home.mp4",
+                link: "#"
             },
             {
                 title: "Iceland",
-                video: "/videos/test1.mp4"
+                video: "/videos/test1.mp4",
+                link: "#"
             },
             {
                 title: "Jordania",
-                video: "/videos/test2.mp4"
+                video: "/videos/test2.mp4",
+                link: "#"
             },
         ];
 
@@ -60,6 +69,7 @@
         const sliderVideos = document.querySelector('.c-slider__videos');
         const sliderTitle = document.querySelector('.c-slider__title');
         const sliderIndices = document.querySelector('.c-slider__indices');
+        const sliderLink = document.querySelector('.c-slider__link');
 
         let activeSlide = 0;
         let currentSplit = null;
@@ -95,29 +105,46 @@
         function animatedNewSlide(index) {
             const newSliderVideo = document.createElement('video');
             newSliderVideo.src = slides[index].video;
+            sliderLink.href = slides[index].link;
             newSliderVideo.autoplay = true;
             newSliderVideo.muted = true;
             newSliderVideo.loop = true;
             newSliderVideo.playsInline = true;
 
             gsap.set(newSliderVideo, {
-                opacity: 0,
-                scale: 1.1,
+                clipPath: "inset(100% 0% 0% 0%)",
+                scale: 1.2
             });
 
             sliderVideos.appendChild(newSliderVideo);
 
-            gsap.to(newSliderVideo, {
-                opacity: 1,
-                duration: 0.5,
-                ease: "power2.out",
+            const videos = sliderVideos.querySelectorAll("video");
+            const previousVideo = videos[videos.length - 2];
+
+            const tl = gsap.timeline({
+                defaults:{ ease:"power4.inOut" }
             });
 
-            gsap.to(newSliderVideo, {
-                opacity: 1,
-                duration: 0.5,
-                ease: "power2.out",
-            });
+            if(previousVideo){
+                tl.to(previousVideo,{
+                    scale:1,
+                    opacity:0.5,
+                    duration:1
+                },0)
+            }
+
+            tl.to(newSliderVideo,{
+                clipPath:"inset(0% 0% 0% 0%)",
+                scale:1,
+                duration:1.2
+            },0);
+
+            tl.fromTo(
+                ".c-slider__title",
+                { y:120, opacity:0 },
+                { y:0, opacity:1, duration:0.8 },
+                0.4
+            );
 
             const allVideos = sliderVideos.querySelectorAll('video');
             if(allVideos.length > 3) {
@@ -130,7 +157,6 @@
             animatedNewTitle(index);
             animatedIndicators(index);
         }
-
         function animatedIndicators(index) {
             const indicators = sliderIndices.querySelectorAll("p");
 

@@ -1,7 +1,32 @@
 @layer components {
     .c-footer {
-        @apply relative bg-primary py-20 -mt-40 px-10 z-40;
+        @apply 
+            relative 
+            bg-primary 
+            pt-20 
+            -mt-40 
+            overflow-hidden
+            px-10 
+            z-40;
     }
 
-    
+    .c-footer__grid {
+        @apply 
+            w-full 
+            grid 
+            grid-cols-12 
+            pt-20
+            mb-72
+            gap-4;
+    }
+
+    .c-footer__title {
+        @apply 
+            text-5xl 
+            flex 
+            uppercase
+            gap-2
+            items-center
+            col-span-6;
+    }
 }
