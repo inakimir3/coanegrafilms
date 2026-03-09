@@ -1,7 +1,9 @@
+
 <section class="c-slider">
     <a class="c-slider__link" href="#">
         <div class="c-slider__videos">
-            <video src="/videos/test1.mp4" autoplay muted loop playsinline class="w-full h-full object-cover"></video>
+
+            <video src="https://stream.mux.com/qE3aArSuBz02pE8Sf02Wc1PT100bm9DccZRt3wHgvMZZ2M.m3u8" preload="auto" autoplay muted loop playsinline class="w-full h-full object-cover"></video>
         </div>
 
         <div class="c-slider__title">
@@ -39,27 +41,27 @@
         const slides = [
             {
                 title: "Zalando Social Media",
-                video: "/videos/test1.mp4",
+                video: "https://stream.mux.com/qE3aArSuBz02pE8Sf02Wc1PT100bm9DccZRt3wHgvMZZ2M.m3u8",
                 link: "#"
             },
             {
                 title: "Vi de la Terra",
-                video: "/videos/test2.mp4",
+                video: "https://stream.mux.com/ZVNXTKwWCSrX2j5MMoxvQuGir02v4vuG8ocF77a3w4zM.m3u8",
                 link: "#"
             },
             {
                 title: "Namibia",
-                video: "/videos/video-home.mp4",
+                video: "https://stream.mux.com/ZVNXTKwWCSrX2j5MMoxvQuGir02v4vuG8ocF77a3w4zM.m3u8",
                 link: "#"
             },
             {
                 title: "Iceland",
-                video: "/videos/test1.mp4",
+                video: "https://stream.mux.com/ZVNXTKwWCSrX2j5MMoxvQuGir02v4vuG8ocF77a3w4zM.m3u8",
                 link: "#"
             },
             {
                 title: "Jordania",
-                video: "/videos/test2.mp4",
+                video: "https://stream.mux.com/ZVNXTKwWCSrX2j5MMoxvQuGir02v4vuG8ocF77a3w4zM.m3u8",
                 link: "#"
             },
         ];
@@ -109,6 +111,7 @@
             newSliderVideo.autoplay = true;
             newSliderVideo.muted = true;
             newSliderVideo.loop = true;
+            newSliderVideo.preload = "auto";
             newSliderVideo.playsInline = true;
 
             gsap.set(newSliderVideo, {
