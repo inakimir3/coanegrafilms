@@ -3,10 +3,38 @@
         <video src="/videos/video-home.mp4" autoplay muted loop playsinline class="c-hero__video"></video>
     </div>
     <div class="c-hero__content">
-        <div class=" flex w-full flex-col items-center">
-            <img src="/logos/logo.svg" class="mt-2 mb-8 w-2/3" alt=""> 
-            <h1 class="mx-auto max-w-sm text-center uppercase">A new generation studio based in Mallorca producing cinematic films for brands and destinations.</h1>
+        <div class="c-hero__content-container">
+            <img id="hero-logo" src="/logos/logo.svg" class="mt-2 mb-8 w-full md:w-2/3" alt="Logo Coanegra Films"> 
+            <h1 id="hero-title" class="c-hero__content-title">A new generation studio based in Mallorca producing cinematic films for brands and destinations.</h1>
         </div>
-        <p class="text-xs">Scroll to Discover</p>
+        <p id="hero-scroll" class="text-xs uppercase">Scroll to Discover</p>
     </div>
 </section>
+
+<script>
+    import gsap from "gsap";
+
+    gsap.to("#hero-logo", {
+        clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
+        duration: 1.5,
+        ease: "power3.inOut",
+        delay: 0.1,
+        scrollTrigger: "#hero-logo"
+    });
+
+    gsap.from("#hero-title", {
+        opacity: 0,
+        y: 50,
+        duration: 1.5,
+        ease: "power3.out",
+        delay: 1
+    });
+
+    gsap.from("#hero-scroll", {
+        opacity: 0,
+        y: 20,
+        duration: 1.5,
+        ease: "power3.out",
+        delay: 1.5
+    });
+</script>

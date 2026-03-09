@@ -7,7 +7,8 @@
                         top-0
                         left-0
                         py-5
-                        flex 
+                        hidden
+                        md:flex 
                         items-center 
                         justify-center;
         }
@@ -56,4 +57,83 @@
                         text-white
                         hover:bg-white/20;
         }
+
+        .c-header__mobile {
+                @apply 
+                        w-full 
+                        fixed
+                        z-50
+                        top-0
+                        left-0
+                        px-5
+                        py-5
+                        md:hidden
+                        flex 
+                        items-center 
+                        justify-end;
+        }
+
+        .c-header__mobile-menu {
+                @apply
+                        h-dvh
+                        bg-white/10
+                        backdrop-blur-lg
+                        absolute
+                        flex
+                        flex-col
+                        gap-4
+                        items-center
+                        justify-center
+                        inset-0
+                        px-5
+                        transition-all
+                        duration-600
+                        opacity-0
+                        z-10;
+        }
+
+        .c-header__mobile-menu a{
+                @apply
+                        text-3xl;
+        }
+
+        .c-header__menu-btn {
+                @apply 
+                        z-50 
+                        flex 
+                        flex-col 
+                        justify-center 
+                        bg-white/10
+                        backdrop-blur-lg
+                        rounded-full
+                        items-center 
+                        size-10;
+        }
+
+        .c-header__menu-btn span {
+                @apply 
+                        block 
+                        w-5 
+                        h-[2px] 
+                        bg-white;
+                        transition: all .35s ease;
+        }
+
+        .c-header__menu-btn span:nth-child(2) {
+                margin: 5px 0;
+        }
+
+
+        .c-header__menu-btn.is-open span:nth-child(1) {
+                transform: translateY(7px) rotate(45deg);
+        }
+
+        .c-header__menu-btn.is-open span:nth-child(2) {
+                opacity: 0;
+        }
+
+        .c-header__menu-btn.is-open span:nth-child(3) {
+                transform: translateY(-7px) rotate(-45deg);
+        }
+
 }

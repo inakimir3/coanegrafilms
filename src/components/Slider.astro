@@ -3,7 +3,7 @@
     <a class="c-slider__link" href="#">
         <div class="c-slider__videos">
 
-            <video src="https://stream.mux.com/qE3aArSuBz02pE8Sf02Wc1PT100bm9DccZRt3wHgvMZZ2M.m3u8" preload="auto" autoplay muted loop playsinline class="w-full h-full object-cover"></video>
+            <video src="/videos/test1.mp4" preload="auto" autoplay muted loop playsinline class="w-full h-full object-cover"></video>
         </div>
 
         <div class="c-slider__title">
@@ -41,27 +41,27 @@
         const slides = [
             {
                 title: "Zalando Social Media",
-                video: "https://stream.mux.com/qE3aArSuBz02pE8Sf02Wc1PT100bm9DccZRt3wHgvMZZ2M.m3u8",
+                video: "/videos/test1.mp4",
                 link: "#"
             },
             {
                 title: "Vi de la Terra",
-                video: "https://stream.mux.com/ZVNXTKwWCSrX2j5MMoxvQuGir02v4vuG8ocF77a3w4zM.m3u8",
+                video: "/videos/test2.mp4",
                 link: "#"
             },
             {
                 title: "Namibia",
-                video: "https://stream.mux.com/ZVNXTKwWCSrX2j5MMoxvQuGir02v4vuG8ocF77a3w4zM.m3u8",
+                video: "/videos/test1.mp4",
                 link: "#"
             },
             {
                 title: "Iceland",
-                video: "https://stream.mux.com/ZVNXTKwWCSrX2j5MMoxvQuGir02v4vuG8ocF77a3w4zM.m3u8",
+                video: "/videos/test2.mp4",
                 link: "#"
             },
             {
                 title: "Jordania",
-                video: "https://stream.mux.com/ZVNXTKwWCSrX2j5MMoxvQuGir02v4vuG8ocF77a3w4zM.m3u8",
+                video: "/videos/test1.mp4",
                 link: "#"
             },
         ];
@@ -145,7 +145,7 @@
             tl.fromTo(
                 ".c-slider__title",
                 { y:120, opacity:0 },
-                { y:0, opacity:1, duration:0.8 },
+                { y:0, opacity:1, duration:0.8},
                 0.4
             );
 
@@ -173,21 +173,9 @@
                         duration: 0.3,
                         ease: "power2.out",
                     });
-
-                    gsap.to(markerElement, {
-                        scaleX: 1,
-                        duration: 0.3,
-                        ease: "power2.out",
-                    });
                 } else {
                     gsap.to(indexElement, {
-                        opacity: 0.5,
-                        duration: 0.3,
-                        ease: "power2.out",
-                    });
-
-                    gsap.to(markerElement, {
-                        scaleX: 0,
+                        opacity: 0.4,
                         duration: 0.3,
                         ease: "power2.out",
                     });
@@ -250,12 +238,24 @@
                     duration: 0.5,
                     ease: "power2.inOut",
                 });
+                gsap.to(".c-slider__title", {
+                    y: 50,
+                    opacity: 0,
+                    duration: 0.5,
+                    ease: "power2.inOut",
+                });
             },
             onEnterBack: () => {
                 gsap.fromTo(
                     '.c-slider__indicator',
                     { x: 50, opacity: 0 },
                     { x: 0, opacity: 1, duration: 0.5, ease: "power2.inOut" }
+                );
+
+                gsap.fromTo(
+                    '.c-slider__title',
+                    { y: 50, opacity: 0 },
+                    { y: 0, opacity: 1, duration: 0.5, ease: "power2.inOut" }
                 );
             },
         });

@@ -1,9 +1,43 @@
 <footer class="c-footer">
-        <!-- <div class="c-footer__grid">
-            <a class="col-span-2 col-start-1" href="mailto:coanegrafilms@gmail.com" target="_blank">coanegrafilms@gmail.com</a>
-            <a class="col-span-2 col-start-1" href="https://www.instagram.com/coanegrafilms/" target="_blank">Instagram</a>
-        </div> -->
-        <div class=" flex w-full flex-col items-center">
-            <img src="/logos/logo.svg" class="mt-2" alt="Logo Coanegra Films"> 
-        </div>
+    <div class="c-footer__logo-outer">
+        <img src="/logos/logo.svg" class="mt-2 c-footer__logo" alt="Logo Coanegra Films"> 
+    </div>
+    <div class="c-footer__legal">
+        <p class="text-xs uppercase">© {new Date().getFullYear()} Coanegra Films. All rights reserved.</p>
+        <a href="https://www.inakimir.com" target="_blank">
+            <img src="/logos/inakimir.svg" alt="Inaki Mir Logo" class="w-4">
+        </a>
+    </div>
 </footer>
+
+<script>
+    import gsap from "gsap";
+
+    const footer = document.querySelector(".c-footer");
+
+    const outerRX = gsap.quickTo(".c-footer__logo-outer", "rotationX", { duration: 0.6, ease: "power3" });
+    const outerRY = gsap.quickTo(".c-footer__logo-outer", "rotationY", { duration: 0.6, ease: "power3" });
+
+    const innerX = gsap.quickTo(".c-footer__logo", "x", { duration: 0.6, ease: "power3" });
+    const innerY = gsap.quickTo(".c-footer__logo", "y", { duration: 0.6, ease: "power3" });
+
+    footer.addEventListener("pointermove", (e) => {
+        const rect = footer.getBoundingClientRect();
+
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+
+        outerRX(gsap.utils.interpolate(15, -15, y));
+        outerRY(gsap.utils.interpolate(-15, 15, x));
+
+        innerX(gsap.utils.interpolate(-20, 20, x));
+        innerY(gsap.utils.interpolate(-20, 20, y));
+    });
+
+    footer.addEventListener("pointerleave", () => {
+        outerRX(0);
+        outerRY(0);
+        innerX(0);
+        innerY(0);
+    });
+</script>

@@ -1,25 +1,44 @@
 @layer components {
-    .c-footer {
-        @apply 
-            relative 
-            bg-primary 
-            pt-20 
-            -mt-40 
-            overflow-hidden
-            px-10 
-            z-40;
+    .c-footer{
+    @apply 
+        relative 
+        pt-20 
+        -mt-56 
+        overflow-hidden
+        px-10 
+        z-40;
+        perspective: 900px;
+        background: linear-gradient(to bottom, transparent 0%, black 40%);
     }
 
-    .c-footer__grid {
-        @apply 
-            w-full 
-            grid 
-            grid-cols-12 
-            mb-10
-            gap-4;
+   
+    .c-footer__logo-outer{
+        @apply
+            flex
+            pt-32
+            w-full
+            flex-col
+            items-center;
+        transform-style: preserve-3d;
+        will-change: transform;
     }
 
-    
+    .c-footer__logo{
+        @apply mt-2 w-2/3;
+        will-change: transform;
+    }
 
-    
+    .c-footer__legal{
+        @apply
+            flex
+            items-center
+            justify-between
+            uppercase
+            text-white
+            mt-10
+            w-full
+            px-5
+            py-3;
+    }
+        
 }

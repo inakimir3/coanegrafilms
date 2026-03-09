@@ -71,7 +71,8 @@
         @apply
             absolute
             top-1/2
-            right-8;
+            right-4
+            md:right-8;
     }
 
     .c-slider__indices {
@@ -120,7 +121,7 @@
             ml-2
             top-0
             left-1/2
-            w-0.75
+            w-1
             h-full
             bg-white
             origin-top
