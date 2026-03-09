@@ -1,0 +1,7 @@
+@layer components {
+    .c-footer {
+        @apply relative bg-primary py-20 -mt-40 px-10 z-40;
+    }
+
+    
+}

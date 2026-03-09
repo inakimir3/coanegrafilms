@@ -1,0 +1,127 @@
+@layer components {
+    .c-slider {
+        @apply
+            relative
+            w-full
+            overflow-hidden
+            h-dvh
+            ;
+    }
+
+    .c-slider__videos {
+        @apply
+            absolute
+            w-full
+            h-full;
+    }
+
+    .c-slider__videos::after {
+        content: "";
+        @apply
+            absolute
+            top-0
+            left-0
+            w-full
+            h-full
+            bg-black/35;
+    }
+
+    .c-slider__videos video {
+        @apply
+            absolute
+            w-full
+            h-full
+            origin-center
+            object-cover
+            will-change-transform
+            will-change-[opacity]
+
+    }
+
+    .c-slider__title {
+        @apply
+            absolute
+            top-1/2
+            left-1/2
+            -translate-x-1/2
+            -translate-y-1/2
+            w-full
+            text-white;
+    }
+    .c-slider__title h2 {
+        @apply
+            text-4xl
+            text-center
+            tracking-wide
+            leading-tight
+    }
+
+    .c-slider__indicator {
+        transform: translateY(-50%);
+        @apply
+            absolute
+            top-1/2
+            right-8;
+    }
+
+    .c-slider__indices {
+        @apply
+            flex
+            bg-white/10
+            backdrop-blur-lg
+            rounded-full
+            flex-col
+            gap-4
+            px-2
+            py-6;
+    }
+
+    .c-slider__indices p {
+        @apply
+            flex
+            items-center
+            gap-4
+            text-white;
+    }
+
+    .index {
+        @apply
+            relative
+            w-5
+            flex
+            justify-end
+            will-change-[opacity]
+    }
+
+    
+    .c-slider__progress-bar {
+        @apply
+            absolute
+            top-0
+            right-0
+            h-full
+            bg-white/35;
+    }
+
+    .c-slider__progress {
+        transform: translateX(-50%) scaleY(0);
+        @apply
+            absolute
+            ml-2
+            top-0
+            left-1/2
+            w-0.75
+            h-full
+            bg-white
+            origin-top
+            will-change-transform;
+    }
+
+    .line {
+        @apply 
+            relative
+            block
+            will-change-transform;
+    }
+
+}

@@ -1,0 +1,234 @@
+<section class="c-slider">
+    <div class="c-slider__videos">
+        <video src="/videos/test1.mp4" autoplay muted loop playsinline class="w-full h-full object-cover"></video>
+    </div>
+    <div class="c-slider__title">
+        <h2>Zalando Social Media</h2>
+    </div>
+    <div class="c-slider__indicator">
+        <div class="c-slider__indices"></div>
+        <div class="c-slider__progress-bar">
+            <div class="c-slider__progress"></div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+    import gsap from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+    import { SplitText } from 'gsap/SplitText';
+    import Lenis from 'lenis';
+
+    document.addEventListener("DOMContentLoaded", () => {
+        gsap.registerPlugin(ScrollTrigger, SplitText);
+
+        const lenis = new Lenis();
+
+        lenis.on("scroll", ScrollTrigger.update);
+        gsap.ticker.add((time) => {
+            lenis.raf(time * 1000);
+        });
+
+        gsap.ticker.lagSmoothing(0);
+
+        const slides = [
+            {
+                title: "Zalando Social Media",
+                video: "/videos/test1.mp4"
+            },
+            {
+                title: "Vi de la Terra",
+                video: "/videos/test2.mp4"
+            },
+            {
+                title: "Namibia",
+                video: "/videos/video-home.mp4"
+            },
+            {
+                title: "Iceland",
+                video: "/videos/test1.mp4"
+            },
+            {
+                title: "Jordania",
+                video: "/videos/test2.mp4"
+            },
+        ];
+
+        const pinDistance = window.innerHeight * slides.length;
+        const progressBar = document.querySelector('.c-slider__progress');
+        const sliderVideos = document.querySelector('.c-slider__videos');
+        const sliderTitle = document.querySelector('.c-slider__title');
+        const sliderIndices = document.querySelector('.c-slider__indices');
+
+        let activeSlide = 0;
+        let currentSplit = null;
+
+        function createIndices() {
+            sliderIndices.innerHTML = "";
+
+            slides.forEach((_, index) => {
+                const indexNum = (index + 1).toString().padStart(2, '0');
+                const indicatorElement = document.createElement('p');
+                indicatorElement.dataset.index = index;
+                indicatorElement.innerHTML = `<span class="index">${indexNum}</span>`;
+                sliderIndices.appendChild(indicatorElement);
+
+                if(index === 0) {
+                    gsap.set(indicatorElement.querySelector(".index"), {
+                        opacity: 1,
+                    });
+                    gsap.set(indicatorElement.querySelector(".marker"), {
+                        scaleX: 1,
+                    });
+                } else {
+                    gsap.set(indicatorElement.querySelector(".index"), {
+                        opacity: 0.35,
+                    });
+                    gsap.set(indicatorElement.querySelector(".marker"), {
+                        scaleX: 0,
+                    });
+                }
+            })
+        }
+
+        function animatedNewSlide(index) {
+            const newSliderVideo = document.createElement('video');
+            newSliderVideo.src = slides[index].video;
+            newSliderVideo.autoplay = true;
+            newSliderVideo.muted = true;
+            newSliderVideo.loop = true;
+            newSliderVideo.playsInline = true;
+
+            gsap.set(newSliderVideo, {
+                opacity: 0,
+                scale: 1.1,
+            });
+
+            sliderVideos.appendChild(newSliderVideo);
+
+            gsap.to(newSliderVideo, {
+                opacity: 1,
+                duration: 0.5,
+                ease: "power2.out",
+            });
+
+            gsap.to(newSliderVideo, {
+                opacity: 1,
+                duration: 0.5,
+                ease: "power2.out",
+            });
+
+            const allVideos = sliderVideos.querySelectorAll('video');
+            if(allVideos.length > 3) {
+                const removeCount = allVideos.length - 3;
+                for(let i = 0; i < removeCount; i++) {
+                    sliderVideos.removeChild(allVideos[i]);
+                }
+            }
+
+            animatedNewTitle(index);
+            animatedIndicators(index);
+        }
+
+        function animatedIndicators(index) {
+            const indicators = sliderIndices.querySelectorAll("p");
+
+            indicators.forEach((indicator, i) => {
+                const markerElement = indicator.querySelector(".marker");
+                const indexElement = indicator.querySelector(".index");
+
+                if (i === index) {
+                    gsap.to(indexElement, {
+                        opacity: 1,
+                        duration: 0.3,
+                        ease: "power2.out",
+                    });
+
+                    gsap.to(markerElement, {
+                        scaleX: 1,
+                        duration: 0.3,
+                        ease: "power2.out",
+                    });
+                } else {
+                    gsap.to(indexElement, {
+                        opacity: 0.5,
+                        duration: 0.3,
+                        ease: "power2.out",
+                    });
+
+                    gsap.to(markerElement, {
+                        scaleX: 0,
+                        duration: 0.3,
+                        ease: "power2.out",
+                    });
+                }
+            });
+        }
+
+        function animatedNewTitle(index) {
+            if (currentSplit) {
+                currentSplit.revert();
+            }
+
+            sliderTitle.innerHTML = `<h2>${slides[index].title}</h2>`;
+
+            currentSplit = new SplitText(sliderTitle.querySelector('h2'), {
+                type: "lines",
+                linesClass: "line",
+                mask: "lines",
+            });
+
+            gsap.set(currentSplit.lines, {
+                yPercent: 400,
+                opacity: 0,
+            });
+
+            gsap.to(currentSplit.lines, {
+                yPercent: 0,
+                opacity: 1,
+                duration: 0.75,
+                stagger: 0.1,
+                ease: "power3.out",
+            });
+        }
+
+        createIndices();
+
+        ScrollTrigger.create({
+            trigger: ".c-slider",
+            start: "top top",
+            end: `+=${pinDistance}`,
+            pin: true,
+            scrub: 1,
+            pinSpacing: true,
+            onUpdate: (self) => {
+                gsap.set(progressBar, {
+                    scaleY: self.progress,
+                });
+
+                const currentSlide = Math.floor(self.progress * slides.length);
+
+                if (activeSlide !== currentSlide && currentSlide < slides.length) {
+                    activeSlide = currentSlide;
+                    animatedNewSlide(activeSlide);
+                }
+            },
+            onLeave: () => {
+                gsap.to(".c-slider__indicator", {
+                    x: 50,
+                    opacity: 0,
+                    duration: 0.5,
+                    ease: "power2.inOut",
+                });
+            },
+            onEnterBack: () => {
+                gsap.fromTo(
+                    '.c-slider__indicator',
+                    { x: 50, opacity: 0 },
+                    { x: 0, opacity: 1, duration: 0.5, ease: "power2.inOut" }
+                );
+            },
+        });
+    });
+</script>

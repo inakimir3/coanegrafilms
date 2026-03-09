@@ -1,0 +1,59 @@
+@layer components {
+        .c-header {
+                @apply 
+                        w-full 
+                        fixed
+                        z-50
+                        top-0
+                        left-0
+                        py-5
+                        flex 
+                        items-center 
+                        justify-center;
+        }
+
+        .c-header__nav {
+                @apply
+                        flex
+                        items-center
+                        justify-center
+                        relative
+                        
+                        backdrop-blur-lg
+                        bg-white/10
+                        rounded-full
+                        
+                        ;
+        }
+
+        .is-active {
+                @apply
+                        
+                        transition-all
+                        duration-300
+                        bg-white!
+                        text-primary!
+                        z-[-1]
+                        ;
+                        
+        }
+
+        .c-header__nav a {
+                @apply
+                        inline-flex
+                        items-center
+                        justify-center
+                        gap-2
+                        rounded-full
+                        px-8
+                        py-2
+                        text-sm
+                        uppercase
+                        whitespace-nowrap
+                        transition-all
+                        duration-300
+                        select-none
+                        text-white
+                        hover:bg-white/20;
+        }
+}

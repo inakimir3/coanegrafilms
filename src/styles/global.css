@@ -1,4 +1,9 @@
 @import "tailwindcss";
+@import "./components/c-header.css";
+@import "./components/c-hero.css";
+@import "./components/c-slider.css";
+@import "./components/c-footer.css";
+
 
 @font-face {
     font-family: 'PPMonumentNormal';
@@ -50,4 +55,17 @@
 
 @theme {
     --font-monument: 'PPMonumentNormal', sans-serif;
+    --color-primary: #000;
 }
+
+html, body {
+    @apply
+        m-0
+        relative
+        w-full
+        h-full
+        text-white
+        bg-primary
+        font-monument;
+}
+
