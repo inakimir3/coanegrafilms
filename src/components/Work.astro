@@ -1,0 +1,82 @@
+---
+import { projects, type Project } from '../data/projects';
+---
+
+<section class="c-work ">
+  <h2 class="c-work__title">
+    Our Work
+  </h2>
+
+  <div class="c-work__container">
+    {projects.map((project) => (
+      <a href={project.link} class="group c-work__card" data-astro-prefetch>
+        <div class="c-work__video">
+          <video 
+            loop 
+            muted 
+            playsinline 
+            class=""
+          >
+            <source src={project.video} type="video/mp4" />
+          </video>
+          
+          <div class="c-work__progress">
+            <div class="c-work__progress-bar"></div>
+          </div>
+        </div>
+
+        <div class="c-work__content">
+          <span class="c-work__content-num">{project.id}</span>
+          <h3 class="c-work__content-title">
+            {project.title}
+          </h3>
+        </div>
+      </a>
+    ))}
+  </div>
+</section>
+
+
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const cards = document.querySelectorAll<HTMLAnchorElement>(".c-work__card");
+    cards.forEach(card => {
+        const video = card.querySelector("video");
+        const bar = card.querySelector(".c-work__progress-bar");
+    
+        const updateProgress = () => {
+            if (!video.paused) {
+                const progress = (video.currentTime / video.duration) * 100;
+                gsap.set(bar, { width: `${progress}%` });
+            }
+        };
+
+        card.addEventListener("mouseenter", () => {
+            video.play();
+            gsap.to(bar, { opacity: 1, duration: 0.3, ease: "power2.out" });
+            gsap.ticker.add(updateProgress);
+        });
+
+        card.addEventListener("mouseleave", () => {
+            video.pause();
+            gsap.to(bar, { opacity: 0, duration: 0.3, ease: "power2.in" });
+            gsap.ticker.remove(updateProgress);
+        });
+  });
+
+    gsap.from(".c-work__card", {
+        y: 60,
+        opacity: 0,
+        duration: 1.2,
+        stagger: 0.15,
+        ease: "power4.out",
+        scrollTrigger: {
+            trigger: ".c-work",
+            start: "top 85%",
+        }
+    });
+</script>

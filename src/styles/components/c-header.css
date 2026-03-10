@@ -19,7 +19,6 @@
                         items-center
                         justify-center
                         relative
-                        
                         backdrop-blur-lg
                         bg-white/10
                         rounded-full
@@ -29,13 +28,13 @@
 
         .is-active {
                 @apply
-                        
                         transition-all
                         duration-300
                         bg-white!
                         text-primary!
                         z-[-1]
                         ;
+                  transform: translateY(0);
                         
         }
 

@@ -1,0 +1,116 @@
+@layer components {
+    .c-work {
+        @apply 
+            relative 
+            z-20
+            grid
+            grid-cols-3
+            px-5
+            py-24
+            md:py-40
+            md:px-10
+            overflow-hidden
+            gap-4;
+    }
+
+    .c-work__title {
+        @apply 
+            text-[15vw]
+            uppercase
+            leading-none
+            tracking-tighter
+            md:mb-20
+            mb-10
+            opacity-20
+            font-bold
+            text-white
+            relative
+            w-full
+            text-center
+            z-10
+            col-span-12
+    }
+
+    .c-work__container {
+        @apply
+            col-span-12
+            grid
+            grid-cols-1
+            md:grid-cols-3
+            gap-4;
+    }
+
+    .c-work__card {
+        @apply 
+            relative
+            p-2 
+            flex
+            flex-col
+            z-20
+            text-white;
+    }
+
+    .c-work__content {
+        @apply
+            flex 
+            items-baseline 
+            gap-4;
+    }
+
+    .c-work__content-num {
+        @apply
+            text-xs
+            font-mono 
+            opacity-50
+            ;
+    }
+
+    .c-work__content-title {
+        @apply
+            text-3xl
+            font-light
+            group-hover:translate-x-3 
+            transition-transform 
+            duration-500 
+            ;
+    }
+
+    .c-work__video video{
+        @apply
+            w-full
+            aspect-video
+            transition-all 
+            duration-700 
+            scale-120 
+            group-hover:scale-100
+            brightness-100
+            md:brightness-75
+            group-hover:brightness-100
+            object-cover;
+    }
+
+    .c-work__video {
+        @apply
+            relative
+            mb-6
+            overflow-hidden;
+    }
+
+    .c-work__progress{
+        @apply 
+            absolute 
+            bottom-0 
+            left-0 
+            rounded-full 
+            w-full 
+            h-[4px];
+    }
+
+    .c-work__progress-bar{
+        @apply 
+            h-full 
+            bg-white;
+        width:0%;
+    }
+
+}

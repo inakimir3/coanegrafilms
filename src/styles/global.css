@@ -3,7 +3,7 @@
 @import "./components/c-hero.css";
 @import "./components/c-slider.css";
 @import "./components/c-footer.css";
-
+@import "./components/c-work.css";
 
 @font-face {
     font-family: 'PPMonumentNormal';

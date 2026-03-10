@@ -1,0 +1,44 @@
+<header class="c-header">
+
+  <nav class="c-header__nav">
+    <a href="/">Home</a>
+    <a href="/work" class="is-active">Work</a>
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
+  </nav>
+
+</header>
+
+
+<header class="c-header__mobile">
+
+  <button class="c-header__menu-btn" id="menu-btn">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <div class="c-header__mobile-menu">
+    <a href="/">Home</a>
+    <a href="/work">Work</a>
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
+  </div>
+
+</header>
+
+<script>
+  const btn = document.getElementById('menu-btn');
+  const mobileMenu = document.querySelector('.c-header__mobile-menu');
+
+  btn.addEventListener('click', () => {
+    btn.classList.toggle('is-open');
+
+    if (btn.classList.contains('is-open')) {
+      mobileMenu.style.opacity = '1';
+
+    } else {
+      mobileMenu.style.opacity = '0';
+    }
+  });
+</script>
