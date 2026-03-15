@@ -1,0 +1,117 @@
+@layer components {
+    .c-detail {
+        @apply
+            relative
+            w-full
+            h-dvh
+            flex
+            px-5
+            md:px-10
+            justify-center
+            items-center
+            overflow-hidden;
+    }
+
+    .c-detail__video {
+        @apply
+            absolute
+            top-0
+            left-0
+            w-full
+            h-full
+            brightness-75
+            object-cover;
+    }
+
+    .c-detail__content {
+        @apply
+            relative
+            z-10
+            gap-4
+            flex
+            flex-col
+            text-white
+            ;
+    }
+
+        .c-detail__title {
+            @apply
+                text-4xl
+                md:text-6xl
+                leading-tight
+                ;
+        }
+
+        .c-detail__description {
+            @apply
+                
+                max-w-xl
+                ;
+        }
+
+        .c-detail__button {
+            @apply
+                w-fit
+                relative
+                backdrop-blur-lg
+                rounded-full
+                px-6
+                uppercase
+                text-sm
+                hover:bg-white
+                hover:text-black
+                transition-all
+                duration-300
+                cursor-pointer
+                mt-5
+                py-2
+                bg-white/30
+            ;
+        }
+
+        .c-explorer {
+            @apply
+            w-full
+            h-dvh
+            relative
+            overflow-hidden
+            cursor-grab
+            bg-primary;
+            
+        }
+
+        .c-explorer:active {
+            @apply
+                cursor-grabbing;
+        }
+
+        .c-explorer__canvas {
+            @apply
+                absolute
+                w-[300vw]
+                h-[350vh];
+                transition: filter 0.1s linear;
+                background-image: 
+                    linear-gradient(to right, rgba(128, 128, 128, 0.2) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(128, 128, 128, 0.2) 1px, transparent 1px);
+                background-size: 80px 80px;
+                will-change: transform;
+        }
+
+        .c-explorer__item {
+            @apply
+                absolute
+                w-[25vw]
+                aspect-[16/9]
+                bg-primary;
+        }
+
+        .c-explorer__item img {
+            @apply
+                w-full
+                h-full
+                object-cover
+                block;
+        }
+        
+}

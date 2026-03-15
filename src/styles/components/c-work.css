@@ -28,7 +28,7 @@
             w-full
             text-center
             z-10
-            col-span-12
+            col-span-12;
     }
 
     .c-work__container {

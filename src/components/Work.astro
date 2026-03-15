@@ -15,7 +15,6 @@ import { projects, type Project } from '../data/projects';
             loop 
             muted 
             playsinline 
-            class=""
           >
             <source src={project.video} type="video/mp4" />
           </video>
@@ -43,40 +42,55 @@ import { projects, type Project } from '../data/projects';
 
     gsap.registerPlugin(ScrollTrigger);
 
-    const cards = document.querySelectorAll<HTMLAnchorElement>(".c-work__card");
-    cards.forEach(card => {
-        const video = card.querySelector("video");
-        const bar = card.querySelector(".c-work__progress-bar");
-    
-        const updateProgress = () => {
-            if (!video.paused) {
-                const progress = (video.currentTime / video.duration) * 100;
-                gsap.set(bar, { width: `${progress}%` });
+    function initWorkSection() {
+        const workSection = document.querySelector(".c-work");
+        if (!workSection) return;
+
+        const cards = document.querySelectorAll(".c-work__card");
+
+        cards.forEach(card => {
+            const video = card.querySelector("video") as HTMLVideoElement;
+            const bar = card.querySelector(".c-work__progress-bar");
+            
+            const updateProgress = () => {
+                if (video && !video.paused && video.duration) {
+                    const progress = (video.currentTime / video.duration) * 100;
+                    gsap.set(bar, { width: `${progress}%` });
+                }
+            };
+
+            card.addEventListener("mouseenter", () => {
+                video.play().catch(() => {});
+                gsap.to(bar, { opacity: 1, duration: 0.3, ease: "power2.out" });
+                gsap.ticker.add(updateProgress);
+            });
+
+            card.addEventListener("mouseleave", () => {
+                video.pause();
+                gsap.to(bar, { opacity: 0, duration: 0.3, ease: "power2.in" });
+                gsap.ticker.remove(updateProgress);
+            });
+        });
+
+        gsap.from(".c-work__card", {
+            y: 60,
+            opacity: 0,
+            duration: 1.2,
+            stagger: 0.15,
+            ease: "expo.out",
+            scrollTrigger: {
+                trigger: workSection,
+                start: "top 85%",
+                onKill: () => {
+                }
             }
-        };
-
-        card.addEventListener("mouseenter", () => {
-            video.play();
-            gsap.to(bar, { opacity: 1, duration: 0.3, ease: "power2.out" });
-            gsap.ticker.add(updateProgress);
         });
+    }
 
-        card.addEventListener("mouseleave", () => {
-            video.pause();
-            gsap.to(bar, { opacity: 0, duration: 0.3, ease: "power2.in" });
-            gsap.ticker.remove(updateProgress);
-        });
-  });
+    document.addEventListener("astro:page-load", initWorkSection);
 
-    gsap.from(".c-work__card", {
-        y: 60,
-        opacity: 0,
-        duration: 1.2,
-        stagger: 0.15,
-        ease: "power4.out",
-        scrollTrigger: {
-            trigger: ".c-work",
-            start: "top 85%",
-        }
-    });
+    document.addEventListener("astro:before-preparation", () => {
+        ScrollTrigger.getAll().forEach(st => st.kill());
+        gsap.ticker.sleep(); 
+    }, { once: true });
 </script>

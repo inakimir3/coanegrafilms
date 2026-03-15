@@ -135,4 +135,26 @@
                 transform: translateY(-7px) rotate(-45deg);
         }
 
+        ::view-transition-old(root) {
+                animation: 900ms cubic-bezier(0.76, 0, 0.24, 1) both slide-out;
+        }
+
+        ::view-transition-new(root) {
+                animation: 900ms cubic-bezier(0.76, 0, 0.24, 1) both slide-in;
+        }
+
+        @keyframes slide-out {
+                from { transform: translateY(0); filter: blur(0); }
+                to { transform: translateY(-30px); opacity: 0; filter: blur(20px); }
+        }
+
+        @keyframes slide-in {
+                from { transform: translateY(100vh); }
+                to { transform: translateY(0); }
+        }
+
+        .c-header, .c-header__mobile {
+                view-transition-name: main-header;
+        }
+
 }

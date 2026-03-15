@@ -4,6 +4,8 @@
 @import "./components/c-slider.css";
 @import "./components/c-footer.css";
 @import "./components/c-work.css";
+@import "./components/c-detail.css";
+
 
 @font-face {
     font-family: 'PPMonumentNormal';

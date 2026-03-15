@@ -26,49 +26,25 @@
     import { SplitText } from 'gsap/SplitText';
     import Lenis from 'lenis';
 
-    document.addEventListener("DOMContentLoaded", () => {
-        gsap.registerPlugin(ScrollTrigger, SplitText);
+    gsap.registerPlugin(ScrollTrigger, SplitText);
+
+    function initSlider() {
+        const sliderElement = document.querySelector('.c-slider');
+        if (!sliderElement) return;
 
         const lenis = new Lenis();
-
+        const onRaf = (time) => lenis.raf(time * 1000);
+        
         lenis.on("scroll", ScrollTrigger.update);
-        gsap.ticker.add((time) => {
-            lenis.raf(time * 1000);
-        });
-
+        gsap.ticker.add(onRaf);
         gsap.ticker.lagSmoothing(0);
 
         const slides = [
-            {
-                title: "Zalando Social Media",
-                video: "/videos/test1.mp4",
-                link: "#",
-                poster: "/posters/poster-01.png"
-            },
-            {
-                title: "Vi de la Terra",
-                video: "/videos/test2.mp4",
-                link: "#",
-                poster: "/posters/poster-02.png"
-            },
-            {
-                title: "Namibia",
-                video: "/videos/test1.mp4",
-                link: "#",
-                poster: "/posters/poster-03.png"
-            },
-            {
-                title: "Iceland",
-                video: "/videos/test2.mp4",
-                link: "#",
-                poster: "/posters/poster-01.png"
-            },
-            {
-                title: "Jordania",
-                video: "/videos/test1.mp4",
-                link: "#",
-                poster: "/posters/poster-02.png"
-            },
+            { title: "Zalando Social Media", video: "/videos/test1.mp4", link: "#", poster: "/posters/poster-01.png" },
+            { title: "Vi de la Terra", video: "/videos/test2.mp4", link: "#", poster: "/posters/poster-02.png" },
+            { title: "Namibia", video: "/videos/test1.mp4", link: "#", poster: "/posters/poster-03.png" },
+            { title: "Iceland", video: "/videos/test2.mp4", link: "#", poster: "/posters/poster-01.png" },
+            { title: "Jordania", video: "/videos/test1.mp4", link: "#", poster: "/posters/poster-02.png" },
         ];
 
         const pinDistance = window.innerHeight * slides.length;
@@ -83,187 +59,111 @@
 
         function createIndices() {
             sliderIndices.innerHTML = "";
-
             slides.forEach((_, index) => {
                 const indexNum = (index + 1).toString().padStart(2, '0');
                 const indicatorElement = document.createElement('p');
-                indicatorElement.dataset.index = index;
-                indicatorElement.innerHTML = `<span class="index">${indexNum}</span>`;
+                indicatorElement.innerHTML = `<span class="index" style="opacity: ${index === 0 ? 1 : 0.35}">${indexNum}</span>`;
                 sliderIndices.appendChild(indicatorElement);
+            });
+        }
 
-                if(index === 0) {
-                    gsap.set(indicatorElement.querySelector(".index"), {
-                        opacity: 1,
-                    });
-                    gsap.set(indicatorElement.querySelector(".marker"), {
-                        scaleX: 1,
-                    });
-                } else {
-                    gsap.set(indicatorElement.querySelector(".index"), {
-                        opacity: 0.35,
-                    });
-                    gsap.set(indicatorElement.querySelector(".marker"), {
-                        scaleX: 0,
-                    });
-                }
-            })
+        function animatedNewTitle(index) {
+            if (currentSplit) currentSplit.revert();
+            sliderTitle.innerHTML = `<h2>${slides[index].title}</h2>`;
+            
+            currentSplit = new SplitText(sliderTitle.querySelector('h2'), {
+                type: "lines",
+                linesClass: "line-parent"
+            });
+
+            currentSplit.lines.forEach(line => {
+                const wrapper = document.createElement('div');
+                wrapper.style.overflow = 'hidden';
+                line.parentNode.insertBefore(wrapper, line);
+                wrapper.appendChild(line);
+            });
+
+            gsap.from(currentSplit.lines, {
+                yPercent: 100,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: "expo.out"
+            });
         }
 
         function animatedNewSlide(index) {
-            const newSliderVideo = document.createElement('video');
-            newSliderVideo.src = slides[index].video;
-            newSliderVideo.poster = slides[index].poster;
-            sliderLink.href = slides[index].link;
-            newSliderVideo.autoplay = true;
-            newSliderVideo.muted = true;
-            newSliderVideo.loop = true;
-            newSliderVideo.preload = "auto";
-            newSliderVideo.playsInline = true;
-
-            gsap.set(newSliderVideo, {
-                clipPath: "inset(100% 0% 0% 0%)",
-                scale: 1.2
+            const newVideo = document.createElement('video');
+            Object.assign(newVideo, {
+                src: slides[index].video,
+                poster: slides[index].poster,
+                autoplay: true,
+                muted: true,
+                loop: true,
+                preload: "auto",
+                playsInline: true,
+                className: "w-full h-full object-cover absolute inset-0"
             });
 
-            sliderVideos.appendChild(newSliderVideo);
+            sliderLink.href = slides[index].link;
+            gsap.set(newVideo, { clipPath: "inset(100% 0% 0% 0%)", scale: 1.1 });
+            sliderVideos.appendChild(newVideo);
 
             const videos = sliderVideos.querySelectorAll("video");
             const previousVideo = videos[videos.length - 2];
 
-            const tl = gsap.timeline({
-                defaults:{ ease:"power4.inOut" }
-            });
+            const tl = gsap.timeline({ defaults: { ease: "expo.inOut", duration: 1.2 } });
 
-            if(previousVideo){
-                tl.to(previousVideo,{
-                    scale:1,
-                    opacity:0.5,
-                    duration:1
-                },0)
+            if (previousVideo) {
+                tl.to(previousVideo, { scale: 0.9, opacity: 0, duration: 1 }, 0);
             }
 
-            tl.to(newSliderVideo,{
-                clipPath:"inset(0% 0% 0% 0%)",
-                scale:1,
-                duration:1.2
-            },0);
+            tl.to(newVideo, { clipPath: "inset(0% 0% 0% 0%)", scale: 1 }, 0);
 
-            tl.fromTo(
-                ".c-slider__title",
-                { y:120, opacity:0 },
-                { y:0, opacity:1, duration:0.8},
-                0.4
-            );
-
-            const allVideos = sliderVideos.querySelectorAll('video');
-            if(allVideos.length > 3) {
-                const removeCount = allVideos.length - 3;
-                for(let i = 0; i < removeCount; i++) {
-                    sliderVideos.removeChild(allVideos[i]);
-                }
+            if (videos.length > 2) {
+                setTimeout(() => videos[0].remove(), 1300);
             }
 
             animatedNewTitle(index);
             animatedIndicators(index);
         }
+
         function animatedIndicators(index) {
-            const indicators = sliderIndices.querySelectorAll("p");
-
-            indicators.forEach((indicator, i) => {
-                const markerElement = indicator.querySelector(".marker");
-                const indexElement = indicator.querySelector(".index");
-
-                if (i === index) {
-                    gsap.to(indexElement, {
-                        opacity: 1,
-                        duration: 0.3,
-                        ease: "power2.out",
-                    });
-                } else {
-                    gsap.to(indexElement, {
-                        opacity: 0.4,
-                        duration: 0.3,
-                        ease: "power2.out",
-                    });
-                }
-            });
-        }
-
-        function animatedNewTitle(index) {
-            if (currentSplit) {
-                currentSplit.revert();
-            }
-
-            sliderTitle.innerHTML = `<h2>${slides[index].title}</h2>`;
-
-            currentSplit = new SplitText(sliderTitle.querySelector('h2'), {
-                type: "lines",
-                linesClass: "line",
-                mask: "lines",
-            });
-
-            gsap.set(currentSplit.lines, {
-                yPercent: 400,
-                opacity: 0,
-            });
-
-            gsap.to(currentSplit.lines, {
-                yPercent: 0,
-                opacity: 1,
-                duration: 0.75,
-                stagger: 0.1,
-                ease: "power3.out",
+            const indicators = sliderIndices.querySelectorAll(".index");
+            indicators.forEach((el, i) => {
+                gsap.to(el, { opacity: i === index ? 1 : 0.35, duration: 0.3 });
             });
         }
 
         createIndices();
-
-        ScrollTrigger.create({
+        
+        const mainST = ScrollTrigger.create({
             trigger: ".c-slider",
             start: "top top",
             end: `+=${pinDistance}`,
             pin: true,
-            scrub: 1,
-            pinSpacing: true,
+            scrub: true,
             onUpdate: (self) => {
-                gsap.set(progressBar, {
-                    scaleY: self.progress,
-                });
-
-                const currentSlide = Math.floor(self.progress * slides.length);
-
-                if (activeSlide !== currentSlide && currentSlide < slides.length) {
+                gsap.set(progressBar, { scaleY: self.progress, transformOrigin: "top" });
+                const currentSlide = Math.floor(self.progress * (slides.length - 0.01));
+                if (activeSlide !== currentSlide) {
                     activeSlide = currentSlide;
                     animatedNewSlide(activeSlide);
                 }
             },
             onLeave: () => {
-                gsap.to(".c-slider__indicator", {
-                    x: 50,
-                    opacity: 0,
-                    duration: 0.5,
-                    ease: "power2.inOut",
-                });
-                gsap.to(".c-slider__title", {
-                    y: 50,
-                    opacity: 0,
-                    duration: 0.5,
-                    ease: "power2.inOut",
-                });
+                gsap.to([sliderTitle, sliderIndices], { y: -20, opacity: 0, autoAlpha: 0 });
             },
             onEnterBack: () => {
-                gsap.fromTo(
-                    '.c-slider__indicator',
-                    { x: 50, opacity: 0 },
-                    { x: 0, opacity: 1, duration: 0.5, ease: "power2.inOut" }
-                );
-
-                gsap.fromTo(
-                    '.c-slider__title',
-                    { y: 50, opacity: 0 },
-                    { y: 0, opacity: 1, duration: 0.5, ease: "power2.inOut" }
-                );
-            },
+                gsap.to([sliderTitle, sliderIndices], { y: 0, opacity: 1, autoAlpha: 1 });
+            }
         });
-    });
+
+        document.addEventListener("astro:before-preparation", () => {
+            lenis.destroy();
+            mainST.kill();
+            gsap.ticker.remove(onRaf);
+        }, { once: true });
+    }
+
+    document.addEventListener("astro:page-load", initSlider);
 </script>

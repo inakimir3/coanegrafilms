@@ -28,17 +28,30 @@
 </header>
 
 <script>
-  const btn = document.getElementById('menu-btn');
-  const mobileMenu = document.querySelector('.c-header__mobile-menu');
+  function initHeader() {
+    const btn = document.getElementById('menu-btn');
+    const mobileMenu = document.querySelector('.c-header__mobile-menu');
 
-  btn.addEventListener('click', () => {
-    btn.classList.toggle('is-open');
+    if (!btn || !mobileMenu) return;
 
-    if (btn.classList.contains('is-open')) {
-      mobileMenu.style.opacity = '1';
+    btn.classList.remove('is-open');
+    mobileMenu.style.opacity = '0';
+    mobileMenu.style.pointerEvents = 'none';
 
-    } else {
-      mobileMenu.style.opacity = '0';
-    }
-  });
+    btn.onclick = () => {
+      const isOpen = btn.classList.toggle('is-open');
+      
+      import('gsap').then(({ default: gsap }) => {
+        gsap.to(mobileMenu, {
+          opacity: isOpen ? 1 : 0,
+          y: isOpen ? 0 : -20,
+          duration: 0.4,
+          ease: "expo.out",
+          pointerEvents: isOpen ? 'all' : 'none'
+        });
+      });
+    };
+  }
+
+  document.addEventListener("astro:page-load", initHeader);
 </script>

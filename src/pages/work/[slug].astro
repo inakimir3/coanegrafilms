@@ -1,0 +1,114 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Headers/HeaderWork.astro';
+import Footer from '../../components/Footer.astro';
+import { projects } from '../../data/projects';
+
+export async function getStaticPaths() {
+  return projects.map((project) => {
+    const slug = project.link.split('/').pop();
+    return {
+      params: { slug },
+      props: { project },
+    };
+  });
+}
+
+
+const { project } = Astro.props;
+const gallery = project.gallery || [];
+
+const displayImages = gallery; 
+const COLS = 3; // Amb 10-15 fotos, 3 o 4 columnes és ideal per a que estiguin separades
+const GAP_X = 50; // vw
+const GAP_Y = 60; // vh
+
+---
+
+<Layout title={project.title + " - Coanega Films"}>
+  <Header />
+  <section class="c-detail">
+    <video 
+    src={project.video} 
+    playsinline 
+    autoplay
+    muted
+    loop
+    class="c-detail__video"
+    ></video>
+    <article class="c-detail__content">
+      <h1 class="c-detail__title">{project.title}</h1>
+      <p class="c-detail__description">{project.description}</p>
+      <button class="c-detail__button">Play video</button>
+    </article>
+  </section>
+  
+  <section class="c-explorer" id="explorer-container">
+    <div class="c-explorer__canvas" id="canvas">
+      {displayImages.map((src, i) => {
+        const col = i % COLS;
+        const row = Math.floor(i / COLS);
+        
+        const offsetRow = (col % 2 === 0) ? 0 : 30; 
+
+        return (
+          <div 
+            class="c-explorer__item" 
+            style={`left: ${col * GAP_X + 90}vw; top: ${row * GAP_Y + offsetRow + 100}vh;`}
+          >
+            <img src={src} alt={project.title} draggable="false" />
+          </div>
+        );
+      })}
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
+
+
+<script>
+  import { gsap } from "gsap";
+  import { Draggable } from "gsap/Draggable";
+
+  gsap.registerPlugin(Draggable);
+
+  function initAdvancedCanvas() {
+    const canvas = document.getElementById("canvas");
+    const container = document.getElementById("explorer-container");
+
+    if (!canvas || !container) return;
+
+    const centerX = -(canvas.offsetWidth / 2 - window.innerWidth / 2);
+    const centerY = -(canvas.offsetHeight / 2 - window.innerHeight / 2);
+    gsap.set(canvas, { x: centerX, y: centerY });
+
+    Draggable.create(canvas, {
+      type: "x,y",
+      bounds: container,
+      inertia: true,
+      edgeResistance: 0.6,
+      onDrag: updateParallax,
+      onThrowUpdate: updateParallax,
+      onThrowComplete: () => {
+        gsap.to(canvas, { filter: "blur(0px)", duration: 0.4 });
+      }
+    });
+
+    function updateParallax() {
+      gsap.set(canvas, {
+        backgroundPosition: `${-this.x * 0.2}px ${-this.y * 0.2}px`
+      });
+
+      const velocity = Math.sqrt(this.getVelocity("x") ** 2 + this.getVelocity("y") ** 2);
+      
+      const blurAmount = Math.min(velocity / 500, 4);
+
+      gsap.set(canvas, {
+        filter: `blur(${blurAmount}px)`
+      });
+    }
+  }
+
+  document.addEventListener("astro:page-load", initAdvancedCanvas);
+</script>
