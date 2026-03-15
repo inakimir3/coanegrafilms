@@ -15,8 +15,10 @@ import { projects } from '../data/projects';
             loop 
             muted 
             playsinline 
+            preload="metadata" 
+            class="c-work__video-element"
           >
-            <source src={project.video} type="video/mp4" />
+            <source src={`${project.video}#t=0.001`} type="video/mp4" />
           </video>
           
           <div class="c-work__progress">
@@ -52,8 +54,11 @@ import { projects } from '../data/projects';
             const video = card.querySelector("video") as HTMLVideoElement;
             const bar = card.querySelector(".c-work__progress-bar");
             
+            if (!video || !bar) return;
+
+            // Definim la funció d'actualització específica per a AQUESTA card
             const updateProgress = () => {
-                if (video && !video.paused && video.duration) {
+                if (!video.paused && video.duration) {
                     const progress = (video.currentTime / video.duration) * 100;
                     gsap.set(bar, { width: `${progress}%` });
                 }
@@ -61,17 +66,19 @@ import { projects } from '../data/projects';
 
             card.addEventListener("mouseenter", () => {
                 video.play().catch(() => {});
-                gsap.to(bar, { opacity: 1, duration: 0.3, ease: "power2.out" });
+                gsap.to(bar, { opacity: 1, duration: 0.3 });
+                // El ticker de GSAP és més eficient que un setInterval
                 gsap.ticker.add(updateProgress);
             });
 
             card.addEventListener("mouseleave", () => {
                 video.pause();
-                gsap.to(bar, { opacity: 0, duration: 0.3, ease: "power2.in" });
+                gsap.to(bar, { opacity: 0, duration: 0.3 });
                 gsap.ticker.remove(updateProgress);
             });
         });
 
+        // Animació d'entrada de la secció (ScrollTrigger)
         gsap.from(".c-work__card", {
             y: 60,
             opacity: 0,
@@ -81,16 +88,14 @@ import { projects } from '../data/projects';
             scrollTrigger: {
                 trigger: workSection,
                 start: "top 85%",
-                onKill: () => {
-                }
             }
         });
     }
 
+    // Astro Lifecycle
     document.addEventListener("astro:page-load", initWorkSection);
 
     document.addEventListener("astro:before-preparation", () => {
         ScrollTrigger.getAll().forEach(st => st.kill());
-        gsap.ticker.sleep(); 
-    }, { once: true });
+    });
 </script>
