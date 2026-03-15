@@ -31,7 +31,7 @@
         @apply 
             absolute 
             w-[25vw] 
-            aspect-[16/9] 
+            aspect-video
             bg-primary 
             overflow-hidden 
             shadow-xl;
