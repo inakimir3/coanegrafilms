@@ -1,6 +1,11 @@
+---
+import Logo3D from "./Logo3D.astro";
+---
+
 <footer class="c-footer">
     <div class="c-footer__logo-outer">
-        <img src="/logos/logo.svg" class="c-footer__logo" alt="Logo Coanegra Films"> 
+        <Logo3D src="/logos/logo.svg" layers={10} class="w-2/3 h-auto" />
+        <!-- <img src="/logos/logo.svg" class="c-footer__logo" alt="Logo Coanegra Films">  -->
     </div>
     <div class="c-footer__legal">
         <p class="text-xs uppercase">© {new Date().getFullYear()} Coanegra Films. All rights reserved.</p>
@@ -14,30 +19,29 @@
     import gsap from "gsap";
 
     const footer = document.querySelector(".c-footer");
-
-    const outerRX = gsap.quickTo(".c-footer__logo-outer", "rotationX", { duration: 0.6, ease: "power3" });
-    const outerRY = gsap.quickTo(".c-footer__logo-outer", "rotationY", { duration: 0.6, ease: "power3" });
-
-    const innerX = gsap.quickTo(".c-footer__logo", "x", { duration: 0.6, ease: "power3" });
-    const innerY = gsap.quickTo(".c-footer__logo", "y", { duration: 0.6, ease: "power3" });
+    const container = document.querySelector("#logo-3d-container");
+    
+    const rotateX = gsap.quickTo(container, "rotationX", { duration: 0.5, ease: "power2.out" });
+    const rotateY = gsap.quickTo(container, "rotationY", { duration: 0.5, ease: "power2.out" });
 
     footer.addEventListener("pointermove", (e) => {
-        const rect = footer.getBoundingClientRect();
+        const { left, top, width, height } = footer.getBoundingClientRect();
+        
+        const x = (e.clientX - left) / width - 0.5;
+        const y = (e.clientY - top) / height - 0.5;
 
-        const x = (e.clientX - rect.left) / rect.width;
-        const y = (e.clientY - rect.top) / rect.height;
-
-        outerRX(gsap.utils.interpolate(15, -15, y));
-        outerRY(gsap.utils.interpolate(-15, 15, x));
-
-        innerX(gsap.utils.interpolate(-20, 20, x));
-        innerY(gsap.utils.interpolate(-20, 20, y));
+        rotateY(x * 60);
+        rotateX(-y * 60);
     });
 
     footer.addEventListener("pointerleave", () => {
-        outerRX(0);
-        outerRY(0);
-        innerX(0);
-        innerY(0);
+        rotateX(0);
+        rotateY(0);
     });
 </script>
+
+<style>
+    .perspective-1000 {
+        perspective: 1000px;
+    }
+</style>
