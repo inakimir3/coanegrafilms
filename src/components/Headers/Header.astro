@@ -28,6 +28,7 @@
 </header>
 
 <script>
+  import gsap from 'gsap';
   function initHeader() {
     const btn = document.getElementById('menu-btn');
     const mobileMenu = document.querySelector('.c-header__mobile-menu');
@@ -41,7 +42,7 @@
     btn.onclick = () => {
       const isOpen = btn.classList.toggle('is-open');
       
-      import('gsap').then(({ default: gsap }) => {
+     
         gsap.to(mobileMenu, {
           opacity: isOpen ? 1 : 0,
           y: isOpen ? 0 : -20,
@@ -49,7 +50,7 @@
           ease: "expo.out",
           pointerEvents: isOpen ? 'all' : 'none'
         });
-      });
+      ;
     };
   }
 
