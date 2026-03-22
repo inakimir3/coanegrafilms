@@ -15,6 +15,68 @@ import { ClientRouter } from 'astro:transitions';
 		<ClientRouter />
 	</head>
 	<body>
+		<div id="loader" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black text-white">
+			<div class="overflow-hidden">
+				<img id="hero-logo" src="/logos/logo.svg" class="mt-2 mb-8 w-full" alt="Logo Coanegra Films"> 
+			</div>
+			<div class="w-48 h-[2px] bg-white/20 mt-8 relative overflow-hidden">
+				<div id="loader-bar" class="absolute inset-0 bg-white scale-x-0 origin-left"></div>
+			</div>
+		</div>
+		<script>
+  import { gsap } from 'gsap';
+
+  // Funció principal de l'animació
+  const runLoader = () => {
+    const loader = document.getElementById('loader');
+    const text = document.getElementById('loader-text');
+    const bar = document.getElementById('loader-bar');
+
+    if (!loader) return;
+
+    // 1. Preparem l'estat (Visible i bloquejat)
+    document.body.style.overflow = 'hidden';
+    gsap.set(loader, { yPercent: 0, display: 'flex' });
+    gsap.set(text, { y: '100%' });
+    gsap.set(bar, { scaleX: 0 });
+
+    const tl = gsap.timeline();
+
+    // 2. Animació core
+    tl.to(text, { y: 0, duration: 0.8, ease: "expo.out" })
+      .to(bar, { scaleX: 1, duration: 1.5, ease: "power4.inOut" })
+      .to(loader, {
+        yPercent: -100,
+        duration: 1,
+        ease: "expo.inOut",
+        onComplete: () => {
+          loader.style.display = 'none';
+          document.body.style.overflow = 'auto';
+        }
+      }, "+=0.2");
+  };
+
+  // --- GESTIÓ D'ESDEVENIMENTS ASTRO ---
+
+  // A) Càrrega inicial del navegador
+  document.addEventListener('DOMContentLoaded', runLoader);
+
+  // B) Cada vegada que canvies de pàgina amb View Transitions
+  document.addEventListener('astro:after-swap', () => {
+    // Això s'executa just quan el DOM ha canviat però abans que l'usuari ho vegi tot
+    const loader = document.getElementById('loader');
+    if (loader) {
+      loader.style.display = 'flex'; // Ens assegurem que sigui visible per a la nova transició
+    }
+  });
+
+  document.addEventListener('astro:page-load', (ev) => {
+    // Si no és la primera càrrega (perquè DOMContentLoaded ja s'ha encarregat)
+    // o si vols que surti SEMPRE, executa runLoader aquí.
+    // Nota: ev.navigationType ens diu si és 'push' (navegació) o 'reload'
+    runLoader();
+  });
+</script>
 		<slot />
 	</body>
 </html>
