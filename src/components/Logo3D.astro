@@ -1,8 +1,7 @@
 ---
-// Logo3D.astro (Versió Ultra-Thick)
 interface Props {
   src: string;
-  layers?: number; // Puja-ho a 20 o 30 per un gruix extrem
+  layers?: number;
   class?: string;
 }
 
@@ -27,12 +26,11 @@ const { src, layers = 25, class: className } = Astro.props;
 <style>
   .preserve-3d {
     transform-style: preserve-3d;
-    /* Això és vital perquè les capes no es tallin entre elles */
     backface-visibility: hidden;
   }
   
   .logo-layer:first-child {
-    position: relative; /* Manté l'espai original */
-    filter: brightness(1.2) saturate(1.1); /* La cara frontal més viva */
+    position: relative;
+    filter: brightness(1.2) saturate(1.1);
   }
 </style>

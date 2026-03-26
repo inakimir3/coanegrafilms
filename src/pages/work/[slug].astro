@@ -93,7 +93,6 @@ const GAP_Y = 60; // vh
 
     if (!canvas || !container || !modal) return;
 
-    // Draggable Logic
     const startX = -(canvas.offsetWidth / 2 - window.innerWidth / 2);
     const startY = -(canvas.offsetHeight / 2 - window.innerHeight / 2);
     gsap.set(canvas, { x: startX, y: startY });
@@ -102,41 +101,62 @@ const GAP_Y = 60; // vh
       type: "x,y",
       bounds: container,
       inertia: true,
-      edgeResistance: 0.6,
-      onThrowComplete: () => {
-        gsap.to(canvas, { filter: "blur(0px)", duration: 0.6, ease: "power2.out" });
-      }
+      edgeResistance: 0.5,
+      cursor: "grab",
+      activeCursor: "grabbing",
+      onDragStart: function() {
+        gsap.to(items, { scale: 0.95, duration: 0.4, ease: "power2.out" });
+      },
+      onDragEnd: function() {
+        gsap.to(items, { scale: 1, duration: 0.4, ease: "back.out(1.7)" });
+      },
     });
 
-    items.forEach(item => {
-      item.addEventListener("click", () => {
-        const src = item.getAttribute("data-src");
-        if (src) {
-          modalImg.src = src;
-          modal.classList.add("is-active");
-          document.body.style.overflow = "hidden";
-          
-          gsap.fromTo(modal, { opacity: 0 }, { opacity: 1, duration: 0.4 });
-          gsap.fromTo(modalImg, { scale: 0.9 }, { scale: 1, duration: 0.5, ease: "back.out(1.5)" });
-        }
-      });
-    });
+    const openModal = (item: Element) => {
+      const src = item.getAttribute("data-src");
+      if (src) {
+        modalImg.src = src;
+        modal.classList.add("is-active");
+        document.body.style.overflow = "hidden";
+        
+        const tl = gsap.timeline();
+        tl.fromTo(modal, { opacity: 0 }, { opacity: 1, duration: 0.4 })
+          .fromTo(modalImg, 
+            { scale: 0.8, y: 50, rotate: -2 }, 
+            { scale: 1, y: 0, rotate: 0, duration: 0.6, ease: "expo.out" }, 
+            "-=0.2"
+          );
+      }
+    };
 
     const closeModal = () => {
       gsap.to(modal, { 
         opacity: 0, 
         duration: 0.3, 
+        ease: "power2.inOut",
         onComplete: () => {
           modal.classList.remove("is-active");
+          modalImg.src = "";
           document.body.style.overflow = "";
         } 
       });
     };
 
+    items.forEach(item => {
+      item.addEventListener("click", () => openModal(item));
+    });
+
     closeButtons.forEach(b => b.addEventListener("click", closeModal));
-    window.addEventListener("keydown", (e) => { if(e.key === "Escape") closeModal(); });
+    
+    const escapeHandler = (e: KeyboardEvent) => {
+      if(e.key === "Escape") closeModal();
+    };
+    window.addEventListener("keydown", escapeHandler);
+
+    window.addEventListener('beforeunload', () => {
+        window.removeEventListener("keydown", escapeHandler);
+    });
   }
 
-  document.addEventListener("astro:page-load", initAdvancedCanvas);
+  window.addEventListener('DOMContentLoaded', initAdvancedCanvas);
 </script>
-
