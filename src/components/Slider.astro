@@ -28,12 +28,19 @@
 
     gsap.registerPlugin(ScrollTrigger, SplitText);
 
+    // Mantenim les variables fora per poder netejar-les si fos necessari
+    let lenis;
+    let mainST;
+
     function initSlider() {
         const sliderElement = document.querySelector('.c-slider');
         if (!sliderElement) return;
 
-        const lenis = new Lenis();
-        const onRaf = (time) => lenis.raf(time * 1000);
+        // Configuració de Lenis (Smooth Scroll)
+        lenis = new Lenis();
+        const onRaf = (time) => {
+            lenis.raf(time * 1000);
+        };
         
         lenis.on("scroll", ScrollTrigger.update);
         gsap.ticker.add(onRaf);
@@ -57,6 +64,7 @@
         let activeSlide = 0;
         let currentSplit = null;
 
+        // --- Funcions Internes ---
         function createIndices() {
             sliderIndices.innerHTML = "";
             slides.forEach((_, index) => {
@@ -124,10 +132,7 @@
             }
 
             animatedNewTitle(index);
-            animatedIndicators(index);
-        }
-
-        function animatedIndicators(index) {
+            // Actualitzem els índexs
             const indicators = sliderIndices.querySelectorAll(".index");
             indicators.forEach((el, i) => {
                 gsap.to(el, { opacity: i === index ? 1 : 0.35, duration: 0.3 });
@@ -136,7 +141,7 @@
 
         createIndices();
         
-        const mainST = ScrollTrigger.create({
+        mainST = ScrollTrigger.create({
             trigger: ".c-slider",
             start: "top top",
             end: `+=${pinDistance}`,
@@ -157,13 +162,8 @@
                 gsap.to([sliderTitle, sliderIndices], { y: 0, opacity: 1, autoAlpha: 1 });
             }
         });
-
-        document.addEventListener("astro:before-preparation", () => {
-            lenis.destroy();
-            mainST.kill();
-            gsap.ticker.remove(onRaf);
-        }, { once: true });
     }
 
-    document.addEventListener("astro:page-load", initSlider);
+    // Canvi clau: Utilitzem DOMContentLoaded per a càrregues estàndard
+    window.addEventListener('DOMContentLoaded', initSlider);
 </script>
