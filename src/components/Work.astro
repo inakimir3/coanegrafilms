@@ -3,99 +3,27 @@ import { projects } from '../data/projects';
 ---
 
 <section class="c-work ">
-  <h2 class="c-work__title">
-    Our Work
-  </h2>
+  <article class="c-work__navbar">
+    <h1 class="c-work__navbar--title">Our work</h1>
+    <p class="c-work__navbar--text">A selection of film and visual storytelling projects by Coanegra Films, a young and creative production company crafting bold narratives, dynamic visuals, and distinctive brand content across independent and collaborative work.</p>
+  </article>
 
-  <div class="c-work__container">
-    {projects.map((project) => (
-      <a href={project.link} class="group c-work__card" data-astro-prefetch>
-        <div class="c-work__video">
-          <video 
-            loop 
-            muted 
-            playsinline 
-            preload="metadata" 
-            class="c-work__video-element"
-          >
-            <source src={`${project.video}#t=0.001`} type="video/mp4" />
-          </video>
-          
-          <div class="c-work__progress">
-            <div class="c-work__progress-bar"></div>
-          </div>
+  <article class="c-work__content">
+      {projects.map((project) => (
+        <div class="c-work__content--item" >
+          <a href={project.link} class="c-work__content--link">
+            <img
+              src={project.cover}
+              alt={project.title}
+              class="c-work__content--image"
+            />
+          </a>
         </div>
+      ))}
+  </article>
 
-        <div class="c-work__content">
-          <span class="c-work__content-num">{project.id}</span>
-          <h3 class="c-work__content-title">
-            {project.title}
-          </h3>
-        </div>
-      </a>
-    ))}
-  </div>
+  
 </section>
 
 
 
-<script>
-    import { gsap } from "gsap";
-    import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-    gsap.registerPlugin(ScrollTrigger);
-
-    function initWorkSection() {
-        const workSection = document.querySelector(".c-work");
-        if (!workSection) return;
-
-        const cards = document.querySelectorAll(".c-work__card");
-
-        cards.forEach(card => {
-            const video = card.querySelector("video") as HTMLVideoElement;
-            const bar = card.querySelector(".c-work__progress-bar");
-            
-            if (!video || !bar) return;
-
-            // Funció de progrés vinculada al ticker de GSAP
-            const updateProgress = () => {
-                if (!video.paused && video.duration) {
-                    const progress = (video.currentTime / video.duration) * 100;
-                    gsap.set(bar, { width: `${progress}%` });
-                }
-            };
-
-            card.addEventListener("mouseenter", () => {
-                video.play().catch(() => {});
-                gsap.to(bar, { opacity: 1, duration: 0.3 });
-                gsap.ticker.add(updateProgress);
-            });
-
-            card.addEventListener("mouseleave", () => {
-                video.pause();
-                // Opcional: reiniciar vídeo al sortir
-                // video.currentTime = 0; 
-                gsap.to(bar, { opacity: 0, duration: 0.3 });
-                gsap.ticker.remove(updateProgress);
-            });
-        });
-
-        // Animació d'entrada tipus 'Reveal' (Estil Awwwards)
-        gsap.from(".c-work__card", {
-            y: 100, // Una mica més agressiu el moviment
-            opacity: 0,
-            duration: 1.5,
-            stagger: 0.1,
-            ease: "expo.out",
-            clearProps: "all", // Neteja els estils en acabar l'animació per evitar conflictes amb el hover
-            scrollTrigger: {
-                trigger: workSection,
-                start: "top 80%",
-                toggleActions: "play none none none"
-            }
-        });
-    }
-
-    // Execució en la càrrega inicial del DOM
-    window.addEventListener('DOMContentLoaded', initWorkSection);
-</script>
